@@ -5,11 +5,13 @@ import GlowingCandle from '@/components/GlowingCandle';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import Tribute from '@/components/Tribute';
+import FluidBackground from '@/components/FluidBackground';
 
 const Index = () => {
   return (
-    <div className="min-h-screen relative overflow-hidden bg-white">
+    <div className="min-h-screen relative overflow-hidden bg-transparent">
       {/* Background elements */}
+      <FluidBackground />
       <FloatingPetals />
       <GlowingCandle />
       
