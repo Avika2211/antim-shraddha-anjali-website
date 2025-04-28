@@ -64,7 +64,7 @@ const Tribute: React.FC = () => {
               </div>
               <div>
                 <h4 className="font-medium text-gray-800">समय:</h4>
-                <p>दोपहर 1:00 बजे से 5:00 बजे तक</p>
+                <p>दोपहर 1:00 बजे से 3:00 बजे तक</p>
               </div>
             </div>
             
