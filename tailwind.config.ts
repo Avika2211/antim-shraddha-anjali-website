@@ -1,3 +1,4 @@
+
 import type { Config } from "tailwindcss";
 
 export default {
@@ -18,6 +19,9 @@ export default {
 			}
 		},
 		extend: {
+			fontFamily: {
+				hindi: ['Noto Sans Devanagari', 'sans-serif'],
+			},
 			colors: {
 				border: 'hsl(var(--border))',
 				input: 'hsl(var(--input))',
@@ -61,7 +65,12 @@ export default {
 					'accent-foreground': 'hsl(var(--sidebar-accent-foreground))',
 					border: 'hsl(var(--sidebar-border))',
 					ring: 'hsl(var(--sidebar-ring))'
-				}
+				},
+				petal: {
+					light: '#FFDEE2',
+					DEFAULT: '#FFB6C1',
+					dark: '#FF9AA2',
+				},
 			},
 			borderRadius: {
 				lg: 'var(--radius)',
@@ -84,11 +93,52 @@ export default {
 					to: {
 						height: '0'
 					}
+				},
+				'float': {
+					'0%, 100%': {
+						transform: 'translateY(0px)',
+					},
+					'50%': {
+						transform: 'translateY(-10px)',
+					},
+				},
+				'sway': {
+					'0%, 100%': {
+						transform: 'rotate(-3deg)',
+					},
+					'50%': {
+						transform: 'rotate(3deg)',
+					},
+				},
+				'flicker': {
+					'0%, 100%': {
+						opacity: '1',
+					},
+					'50%': {
+						opacity: '0.8',
+					}
+				},
+				'fall': {
+					'0%': {
+						transform: 'translateY(-10vh) rotate(0deg)',
+						opacity: '1',
+					},
+					'100%': {
+						transform: 'translateY(100vh) rotate(360deg)',
+						opacity: '0',
+					},
 				}
 			},
 			animation: {
 				'accordion-down': 'accordion-down 0.2s ease-out',
-				'accordion-up': 'accordion-up 0.2s ease-out'
+				'accordion-up': 'accordion-up 0.2s ease-out',
+				'float': 'float 6s ease-in-out infinite',
+				'sway': 'sway 3s ease-in-out infinite',
+				'flicker': 'flicker 3s ease-in-out infinite',
+				'fall': 'fall 10s linear forwards',
+			},
+			backdropBlur: {
+				'xs': '2px',
 			}
 		}
 	},

@@ -1,11 +1,29 @@
-// Update this page (the content is just a fallback if you fail to update the page)
+
+import React from 'react';
+import FloatingPetals from '@/components/FloatingPetals';
+import GlowingCandle from '@/components/GlowingCandle';
+import Header from '@/components/Header';
+import Footer from '@/components/Footer';
+import Tribute from '@/components/Tribute';
 
 const Index = () => {
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-100">
-      <div className="text-center">
-        <h1 className="text-4xl font-bold mb-4">Welcome to Your Blank App</h1>
-        <p className="text-xl text-gray-600">Start building your amazing project here!</p>
+    <div className="min-h-screen relative overflow-hidden bg-white">
+      {/* Background elements */}
+      <FloatingPetals />
+      <GlowingCandle />
+      
+      <div className="container mx-auto px-4 py-10 relative z-10">
+        {/* Header with main title */}
+        <Header />
+        
+        {/* Main tribute content */}
+        <main className="flex flex-col items-center justify-center py-8">
+          <Tribute />
+        </main>
+        
+        {/* Footer */}
+        <Footer />
       </div>
     </div>
   );
