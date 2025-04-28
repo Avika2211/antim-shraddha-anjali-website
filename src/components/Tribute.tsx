@@ -1,6 +1,6 @@
-
 import React, { useState } from 'react';
 import PetalFall from './PetalFall';
+import CommentSection from './CommentSection';
 
 const Tribute: React.FC = () => {
   const [showPetals, setShowPetals] = useState(false);
@@ -127,7 +127,10 @@ const Tribute: React.FC = () => {
         </div>
       </div>
       
-      {/* Petal fall animation */}
+      {/* Add CommentSection after the tribute content */}
+      <CommentSection />
+      
+      {/* Keep PetalFall component */}
       <PetalFall isActive={showPetals} />
     </div>
   );
