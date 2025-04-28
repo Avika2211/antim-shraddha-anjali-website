@@ -31,7 +31,7 @@ const Tribute: React.FC = () => {
           
           <div className="w-full lg:w-2/3 lg:pl-10">
             <h2 className="text-2xl md:text-3xl font-medium mb-4 text-center lg:text-left">
-              पीपल पानी (तेरहवी संस्कार)
+              पीपल पानी (तेरहवी)
             </h2>
             
             <p className="text-gray-700 mb-6 text-lg leading-relaxed">
@@ -127,10 +127,8 @@ const Tribute: React.FC = () => {
         </div>
       </div>
       
-      {/* Add CommentSection after the tribute content */}
       <CommentSection />
       
-      {/* Keep PetalFall component */}
       <PetalFall isActive={showPetals} />
     </div>
   );
