@@ -74,7 +74,7 @@ const Tribute: React.FC = () => {
                 <span className="text-primary-foreground font-bold">📍</span>
               </div>
               <div>
-                <h4 className="font-medium text-gray-800">स्थान:</h4>
+                <h4 className="font-medium text-gray-800">निवास:</h4>
                 <p>E-2/99-100, भूतल, सेक्टर-16, रोहिणी, दिल्ली-110089</p>
               </div>
             </div>
