@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import PetalFall from './PetalFall';
 import CommentSection from './CommentSection';
@@ -35,16 +36,16 @@ const Tribute: React.FC = () => {
             </h2>
             
             <p className="text-gray-700 mb-6 text-lg leading-relaxed">
-              बड़े दुःख के साथ सूचित किया जाता है कि हमारी पूज्य माता श्रीमती मोहिनी देवी काण्डपाल, 
+              बड़े दुःख के साथ सूचित किया जाता है कि हमारी पूज्य माता जी स्‍व. श्रीमती मोहिनी देवी काण्डपाल, 
               पत्नी स्व. श्री पद्मा दत्त काण्डपाल जी का दिनांक 25 अप्रैल 2025, 
-              प्रातः 3:00 बजे (हिन्दू पंचांग अनुसार 24 अप्रैल रात्रि 3:00 बजे) दुखद निधन हो गया।
+              को प्रातः 3:00 बजे (हिन्दू पंचांग अनुसार 24 अप्रैल रात्रि 3:00 बजे) दुःखद निधन हो गया।
             </p>
           </div>
         </div>
         
         <div className="bg-white/50 backdrop-blur-sm p-6 rounded-lg mb-8">
           <h3 className="text-xl font-medium mb-4 text-gray-800">
-            उनकी आत्मा की शांति हेतु तेहरवी संस्कार एवं भोज का आयोजन:
+            उनकी आत्मा की शांति हेतु निम्‍नानुसार पीपलपानी (तेरहवीं) के दिन भोज का आयोजन किया जा रहा है :-
           </h3>
           
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -81,15 +82,12 @@ const Tribute: React.FC = () => {
         </div>
         
         <div className="bg-white/50 backdrop-blur-sm p-6 rounded-lg mb-8">
-          <h3 className="text-lg font-medium mb-2 text-gray-800">लैंडमार्क:</h3>
-          <ul className="list-disc pl-6 space-y-1">
-            <li>आद्याशक्ति मंदिर से 100 मीटर</li>
-            <li>जैन भारती पब्लिक स्कूल से 100 मीटर</li>
-          </ul>
+          <h3 className="text-lg font-medium mb-2 text-gray-800">स्थान:</h3>
+          <p className="mb-2">आद्याशक्ति मंदिर, सेक्टर-16, रोहिणी, दिल्ली</p>
         </div>
         
         <p className="text-center text-lg mb-8">
-          आप सपरिवार पधारकर दिवंगत आत्मा को अपनी श्रद्धांजलि अर्पित करें तथा प्रसाद ग्रहण कर हमें कृतज्ञ करें।
+          आप सपरिवार पधारकर श्रद्धांजलि अर्पित करें।
         </p>
         
         <div className="text-center mb-8">
@@ -105,7 +103,7 @@ const Tribute: React.FC = () => {
               <p className="text-sm">(9811578857)</p>
             </div>
             <div>
-              <p className="font-medium">कृष्णा कौल काण्डपाल</p>
+              <p className="font-medium">कृष्ण कौल काण्डपाल</p>
               <p className="text-sm">(9999183253)</p>
             </div>
             <div>
