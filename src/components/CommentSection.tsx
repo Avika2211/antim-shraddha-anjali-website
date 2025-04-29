@@ -7,33 +7,61 @@ import { Textarea } from '@/components/ui/textarea';
 import { Comment } from '@/types/Comment';
 import { toast } from '@/hooks/use-toast';
 import { MessageSquare, Send } from 'lucide-react';
-
-const STORAGE_KEY = 'shraddhanjaliComments';
+import { supabase } from '@/lib/supabase';
 
 const CommentSection: React.FC = () => {
   const [comments, setComments] = useState<Comment[]>([]);
   const [name, setName] = useState('');
   const [message, setMessage] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
-  // Load comments from localStorage on component mount
+  // Fetch comments from Supabase on component mount
   useEffect(() => {
-    const savedComments = localStorage.getItem(STORAGE_KEY);
-    if (savedComments) {
-      try {
-        setComments(JSON.parse(savedComments));
-      } catch (error) {
-        console.error('Failed to parse saved comments', error);
-        localStorage.removeItem(STORAGE_KEY);
-      }
-    }
+    fetchComments();
+    
+    // Set up real-time subscription for new comments
+    const channel = supabase
+      .channel('public:comments')
+      .on('postgres_changes', 
+        { event: 'INSERT', schema: 'public', table: 'comments' }, 
+        (payload) => {
+          setComments(prevComments => [payload.new as Comment, ...prevComments]);
+        })
+      .subscribe();
+      
+    // Cleanup subscription on unmount
+    return () => {
+      supabase.removeChannel(channel);
+    };
   }, []);
 
-  // Save comments to localStorage whenever they change
-  useEffect(() => {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(comments));
-  }, [comments]);
+  const fetchComments = async () => {
+    setIsLoading(true);
+    try {
+      const { data, error } = await supabase
+        .from('comments')
+        .select('*')
+        .order('created_at', { ascending: false });
+      
+      if (error) {
+        throw error;
+      }
 
-  const handleSubmit = (e: React.FormEvent) => {
+      setComments(data || []);
+    } catch (error) {
+      console.error('Error fetching comments:', error);
+      toast({
+        title: "कमेंट्स लोड करने में समस्या",
+        description: "कृपया पेज को रिफ्रेश करें",
+        variant: "destructive",
+      });
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!name.trim() || !message.trim()) {
       toast({
@@ -44,21 +72,43 @@ const CommentSection: React.FC = () => {
       return;
     }
 
-    const newComment: Comment = {
-      id: Date.now().toString(),
+    setIsSubmitting(true);
+
+    const newComment: Omit<Comment, 'id' | 'timestamp'> = {
       name: name.trim(),
-      message: message.trim(),
-      timestamp: new Date().toLocaleString('hi-IN')
+      message: message.trim()
     };
 
-    setComments(prev => [newComment, ...prev]);
-    setName('');
-    setMessage('');
+    try {
+      const { data, error } = await supabase
+        .from('comments')
+        .insert([newComment])
+        .select();
 
-    toast({
-      title: "श्रद्धांजलि भेजी गई",
-      description: "आपकी श्रद्धांजलि सफलतापूर्वक पोस्ट की गई है",
-    });
+      if (error) throw error;
+
+      // If realtime subscription doesn't work, we manually add the comment
+      if (!data || data.length === 0) {
+        fetchComments();
+      }
+
+      setName('');
+      setMessage('');
+
+      toast({
+        title: "श्रद्धांजलि भेजी गई",
+        description: "आपकी श्रद्धांजलि सफलतापूर्वक पोस्ट की गई है",
+      });
+    } catch (error) {
+      console.error('Error submitting comment:', error);
+      toast({
+        title: "कमेंट पोस्ट करने में समस्या",
+        description: "कृपया थोड़ी देर बाद पुनः प्रयास करें",
+        variant: "destructive",
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -74,6 +124,7 @@ const CommentSection: React.FC = () => {
               value={name}
               onChange={(e) => setName(e.target.value)}
               className="bg-white/50"
+              disabled={isSubmitting}
             />
           </div>
           <div>
@@ -82,18 +133,30 @@ const CommentSection: React.FC = () => {
               value={message}
               onChange={(e) => setMessage(e.target.value)}
               className="bg-white/50 min-h-[100px]"
+              disabled={isSubmitting}
             />
           </div>
           <Button 
             type="submit"
             className="w-full bg-petal hover:bg-petal-dark text-primary-foreground flex items-center justify-center"
+            disabled={isSubmitting}
           >
-            <Send className="mr-2 h-4 w-4" /> संदेश भेजें
+            {isSubmitting ? (
+              <span className="animate-pulse">भेज रहा है...</span>
+            ) : (
+              <>
+                <Send className="mr-2 h-4 w-4" /> संदेश भेजें
+              </>
+            )}
           </Button>
         </form>
       </Card>
 
-      {comments.length > 0 && (
+      {isLoading ? (
+        <div className="text-center py-10">
+          <div className="animate-pulse">कमेंट्स लोड हो रहे हैं...</div>
+        </div>
+      ) : comments.length > 0 ? (
         <div className="space-y-4 mb-8">
           <h3 className="text-xl font-medium">श्रद्धांजलियां ({comments.length})</h3>
           {comments.map((comment) => (
@@ -101,12 +164,16 @@ const CommentSection: React.FC = () => {
               <div className="flex flex-col gap-2">
                 <div className="flex justify-between items-start">
                   <h4 className="font-medium text-lg">{comment.name}</h4>
-                  <span className="text-sm text-gray-500">{comment.timestamp}</span>
+                  <span className="text-sm text-gray-500">{comment.timestamp || new Date(comment.created_at).toLocaleString('hi-IN')}</span>
                 </div>
                 <p className="text-gray-700 whitespace-pre-wrap">{comment.message}</p>
               </div>
             </Card>
           ))}
+        </div>
+      ) : (
+        <div className="text-center py-10 text-gray-500">
+          अभी तक कोई श्रद्धांजलि नहीं। पहली श्रद्धांजलि आप दें।
         </div>
       )}
     </div>
